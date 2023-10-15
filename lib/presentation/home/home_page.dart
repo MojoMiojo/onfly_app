@@ -3,10 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onfly_app/domain/home/model/expense_model.dart';
 import 'package:onfly_app/presentation/home/stores/home_cubit.dart';
 import 'package:onfly_app/presentation/home/stores/home_state.dart';
-import 'package:onfly_app/presentation/utils/extensions/date_time_extension.dart';
-import 'package:onfly_app/presentation/utils/extensions/double_extension.dart';
+import 'package:onfly_app/presentation/utils/extensions/extensions.dart';
 import 'package:onfly_app/presentation/utils/onfly_colors.dart';
-import 'package:onfly_app/presentation/widgets/onfly_app_bar.dart';
+import 'package:onfly_app/presentation/widgets/widgets.dart';
 
 part 'components/home_expense_card.dart';
 part 'components/home_floating_action_button.dart';
@@ -21,7 +20,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late HomeCubit _cubit;
-
+  
   @override
   void initState() {
     _cubit = HomeCubit();
@@ -37,11 +36,8 @@ class _HomePageState extends State<HomePage> {
         if (state is HomeLoadingState) {
           return Container(
             color: OnflyColors.cultured,
-            child: Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: OnflyColors.brandPrimary,
-              ),
+            child: const Center(
+              child: OnflyCircularLoading(),
             ),
           );
         }
