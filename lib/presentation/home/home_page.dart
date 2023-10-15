@@ -68,8 +68,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: const Text('Despesas', textAlign: TextAlign.center),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 16),
                 ListView.separated(
+                  primary: false,
                   shrinkWrap: true,
                   padding: EdgeInsets.zero,
                   itemBuilder: (context, index) => _HomeExpenseCard(

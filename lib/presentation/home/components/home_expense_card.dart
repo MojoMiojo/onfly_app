@@ -49,12 +49,17 @@ class _HomeExpenseCard extends StatelessWidget {
                 expense.value.formatToMoney(),
               ),
               const SizedBox(height: 8),
-              Icon(
-                Icons.signal_wifi_connected_no_internet_4_rounded,
-                color: OnflyColors.burntSienna,
+              Visibility.maintain(
+                visible: !expense.isSubmitted,
+                child: Icon(
+                  Icons.wifi_off_rounded,
+                  color: OnflyColors.burntSienna,
+                ),
               )
             ],
           ),
+          const SizedBox(width: 16),
+          const Icon(Icons.expand_more_rounded)
         ],
       ),
     );

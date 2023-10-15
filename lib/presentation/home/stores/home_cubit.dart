@@ -28,7 +28,7 @@ class HomeCubit extends Cubit<HomeState> {
       title: 'Almoço',
       date: DateTime.now(),
       value: 45.13,
-      isSubmitted: false,
+      isSubmitted: true,
     )
   ];
 }
