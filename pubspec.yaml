@@ -92,7 +92,7 @@ flutter:
   fonts:
     - family: Roboto
       fonts:
-      - asset: fonts\roboto\Roboto-Regular.ttf
+      - asset: assets\fonts\roboto\Roboto-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

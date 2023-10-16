@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:onfly_app/data/api/dio_client.dart';
 
 class ApiHandler {
@@ -8,16 +8,17 @@ class ApiHandler {
     required this.client,
   });
 
-  Future<dynamic> get(String path) async {
-    final response = await client.dio.get(path);
-
-    logRequest(
-      path: path,
-      data: response.data,
-      statusMessage: response.statusMessage,
-      statusCode: response.statusCode,
+  Future<dynamic> get({
+    required String path,
+    Map<String, dynamic>? queryParams,
+  }) async {
+    late dynamic response;
+    
+    response = await client.dio.get(
+      path,
+      queryParameters: queryParams,
     );
-
+    
     return response;
   }
 
@@ -37,14 +38,14 @@ class ApiHandler {
     return response;
   }
 
-  void logRequest({
-    required String path,
-    dynamic data,
-    String? statusMessage,
-    int? statusCode,
-  }) {
-    debugPrint(
-      'ApiHandler > path: [$statusCode]$path, statusMessage: $statusMessage, data: $data',
-    );
-  }
+  // void logRequest({
+  //   required String path,
+  //   dynamic data,
+  //   String? statusMessage,
+  //   int? statusCode,
+  // }) {
+  //   debugPrint(
+  //     'ApiHandler > path: [$statusCode]$path, statusMessage: $statusMessage, data: $data',
+  //   );
+  // }
 }
