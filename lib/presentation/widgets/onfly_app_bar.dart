@@ -15,13 +15,19 @@ class OnflyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      iconTheme: IconThemeData(
+        color: OnflyColors.white,
+      ),
       backgroundColor: OnflyColors.brandPrimary,
       title: title != null
-          ? const Text(
-              'Onfly',
-              style: TextStyle(color: Colors.white),
+          ? Text(
+              title!,
+              style: const TextStyle(color: Colors.white),
             )
-          : SvgPicture.asset('assets/svg/onfly_logo.svg'),
+          : SvgPicture.asset(
+              'assets/svg/onfly_logo.svg',
+              height: 32,
+            ),
     );
   }
 }

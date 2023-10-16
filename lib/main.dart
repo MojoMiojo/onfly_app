@@ -19,13 +19,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Onfly App',
       theme: ThemeData(
+        useMaterial3: true,
+        textTheme: Theme.of(context).textTheme.copyWith(
+              bodyMedium: const TextStyle(fontFamily: 'Roboto', fontSize: 14),
+            ),
         colorScheme: Theme.of(context).colorScheme.copyWith(
               background: OnflyColors.cultured,
               primary: OnflyColors.brandPrimary,
             ),
-        useMaterial3: true,
       ),
       home: const HomePage(),
     );
