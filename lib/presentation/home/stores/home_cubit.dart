@@ -11,6 +11,8 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeLoadedState(mockedExpenses));
   }
 
+  void authenticate() {}
+
   final mockedExpenses = [
     ExpenseModel(
       title: 'Almoço',

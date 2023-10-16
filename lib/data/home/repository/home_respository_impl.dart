@@ -1,4 +1,4 @@
-import 'package:onfly_app/data/api/result.dart';
+import 'package:onfly_app/domain/utils/result.dart';
 import 'package:onfly_app/data/home/datasource/home_datasource.dart';
 import 'package:onfly_app/data/home/model/authenticate_token_dto.dart';
 import 'package:onfly_app/data/home/model/login_dto.dart';
