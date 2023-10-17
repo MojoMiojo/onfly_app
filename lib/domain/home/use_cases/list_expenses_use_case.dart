@@ -3,15 +3,15 @@ import 'package:onfly_app/domain/home/repository/home_repository.dart';
 import 'package:onfly_app/domain/utils/onfly_base_use_case.dart';
 import 'package:onfly_app/domain/utils/result.dart';
 
-class AuthenticateUseCase
-    implements OnflyBaseUseCase<AuthenticateTokenModel, LoginModel> {
+class ListExpensesUseCase
+    implements OnflyBaseUseCase<List<ExpenseModel>, LoginModel> {
   final HomeRepository _homeRepository;
 
-  AuthenticateUseCase(this._homeRepository);
+  ListExpensesUseCase(this._homeRepository);
+
   @override
-  Future<Result<AuthenticateTokenModel, Exception>> call(
-    LoginModel loginModel,
-  ) async {
-    return await _homeRepository.authenticate(loginModel);
+  Future<Result<List<ExpenseModel>, Exception>> call(
+      LoginModel loginModel) async {
+    return await _homeRepository.listExpenses(loginModel);
   }
 }

@@ -12,4 +12,10 @@ class HomeDatasource {
       body: body,
     );
   }
+
+  Future<dynamic> listExpenses(dynamic login) async {
+    return await client.get(
+      path: OnflyApiRoutes(login).listExpenses,
+    );
+  }
 }

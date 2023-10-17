@@ -45,14 +45,14 @@ class _HomeExpenseCardState extends State<_HomeExpenseCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.expense.title,
+                      widget.expense.description,
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      widget.expense.date.brazillianDateFormat(),
+                      widget.expense.asDate.brazillianDateFormat(),
                     )
                   ],
                 ),
@@ -61,7 +61,7 @@ class _HomeExpenseCardState extends State<_HomeExpenseCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.expense.value.formatToMoney(),
+                      widget.expense.amount.formatToMoney(),
                     ),
                     const SizedBox(height: 8),
                     Visibility.maintain(

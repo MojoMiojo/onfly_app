@@ -3,5 +3,10 @@ import 'package:onfly_app/domain/home/model/model.dart';
 
 abstract class HomeRepository {
   Future<Result<AuthenticateTokenModel, Exception>> authenticate(
-      LoginModel loginModel);
+    LoginModel loginModel,
+  );
+
+  Future<Result<List<ExpenseModel>, Exception>> listExpenses(
+    LoginModel loginModel,
+  );
 }

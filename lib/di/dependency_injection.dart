@@ -40,6 +40,9 @@ class DependencyInjection {
     getIt.registerFactory<SetJwtUseCase>(
       () => SetJwtUseCase(getIt()),
     );
+    getIt.registerFactory<ListExpensesUseCase>(
+      () => ListExpensesUseCase(getIt()),
+    );
   }
 
   void registerCubit() {
@@ -47,6 +50,7 @@ class DependencyInjection {
       () => HomeCubit(
         authenticateUseCase: getIt(),
         setJwtUseCase: getIt(),
+        listExpensesUseCase: getIt(),
       ),
     );
   }
