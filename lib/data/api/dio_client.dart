@@ -19,7 +19,12 @@ class DioClient {
   Map<String, String> _getHeaders() {
     Map<String, String> headers = {};
     headers['Content-Type'] = 'application/json';
-
     return headers;
+  }
+
+  void setJwt(String jwt) {
+    var headers = dio.options.headers;
+    headers['Authorization'] = 'Bearer $jwt';
+    dio.options.headers = headers;
   }
 }

@@ -1,19 +1,24 @@
-// import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:onfly_app/data/api/dio_client.dart';
+import 'package:onfly_app/domain/api/api_handler.dart';
 
-class ApiHandler {
+class ApiHandlerImpl extends ApiHandler {
   final DioClient client;
 
-  const ApiHandler({
+  ApiHandlerImpl({
     required this.client,
   });
 
+  @override
+  void setJwt(String jwt) {
+    client.setJwt(jwt);
+  }
+
+  @override
   Future<dynamic> get({
     required String path,
     Map<String, dynamic>? queryParams,
   }) async {
-    
     final response = await client.dio.get(
       path,
       queryParameters: queryParams,
@@ -30,12 +35,12 @@ class ApiHandler {
     return response.data;
   }
 
+  @override
   Future<dynamic> post({
     required String path,
     required dynamic body,
     Map<String, dynamic>? queryParams,
   }) async {
-
     final response = await client.dio.post(
       path,
       data: body,

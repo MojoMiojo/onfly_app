@@ -18,7 +18,7 @@ class DependencyInjection {
 
   void registerApiClient() {
     getIt.registerSingleton<DioClient>(DioClient());
-    getIt.registerFactory<ApiHandler>(() => ApiHandler(client: getIt()));
+    getIt.registerFactory<ApiHandler>(() => ApiHandlerImpl(client: getIt()));
   }
 
   void registerDatasource() {
@@ -37,11 +37,17 @@ class DependencyInjection {
     getIt.registerFactory<AuthenticateUseCase>(
       () => AuthenticateUseCase(getIt()),
     );
+    getIt.registerFactory<SetJwtUseCase>(
+      () => SetJwtUseCase(getIt()),
+    );
   }
 
   void registerCubit() {
     getIt.registerFactory<HomeCubit>(
-      () => HomeCubit(authenticateUseCase: getIt()),
+      () => HomeCubit(
+        authenticateUseCase: getIt(),
+        setJwtUseCase: getIt(),
+      ),
     );
   }
 
