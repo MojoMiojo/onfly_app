@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:onfly_app/domain/home/model/expense_model.dart';
 import 'package:onfly_app/presentation/expense/expense_page.dart';
 import 'package:onfly_app/presentation/home/stores/home_cubit.dart';
@@ -24,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   
   @override
   void initState() {
-    _cubit = HomeCubit();
+    _cubit = GetIt.I();
     _cubit.fetch();
     super.initState();
   }
@@ -40,6 +41,11 @@ class _HomePageState extends State<HomePage> {
             child: const Center(
               child: OnflyCircularLoading(),
             ),
+          );
+        }
+        if (state is HomeErrorState) {
+          return GenericErrorState(
+            onTryAgain: () => _cubit.fetch(),
           );
         }
         if (state is HomeLoadedState) {

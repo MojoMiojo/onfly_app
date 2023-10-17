@@ -15,7 +15,7 @@ class OnflyFilledButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FilledButton(
-      onPressed: () => onPressed,
+      onPressed: () => onPressed.call(),
       style: ButtonStyle(
         padding: MaterialStatePropertyAll(EdgeInsets.all(padding)),
         shape: const MaterialStatePropertyAll(
