@@ -21,4 +21,21 @@ extension ExpenseDTO on ExpenseModel {
     List<dynamic> expenses = response.getValue(key: 'items');
     return expenses.map((expense) => fromData(expense)).toList();
   }
+
+  Map<String, dynamic> fromDomain() {
+    final result = <String, dynamic>{};
+
+    result.addAll({'id': id});
+    result.addAll({'description': description});
+    result.addAll({'expenseDate': expenseDate});
+    result.addAll({'amount': amount});
+    if (latitude != null) {
+      result.addAll({'latitude': latitude});
+    }
+    if (longitude != null) {
+      result.addAll({'longitude': longitude});
+    }
+
+    return result;
+  }
 }

@@ -1,7 +1,12 @@
 import 'package:get_it/get_it.dart';
 import 'package:onfly_app/data/data.dart';
+import 'package:onfly_app/data/expense/datasource/expense_datasource.dart';
+import 'package:onfly_app/data/expense/repository/expense_repository_impl.dart';
 import 'package:onfly_app/data/home/datasource/home_datasource.dart';
 import 'package:onfly_app/data/home/repository/home_respository_impl.dart';
+import 'package:onfly_app/domain/expense/repository/expense_repository.dart';
+import 'package:onfly_app/domain/expense/use_cases/update_expense_use_case.dart';
+import 'package:onfly_app/presentation/expense/stores/expense_cubit.dart';
 import 'package:onfly_app/presentation/presentation.dart';
 import 'package:onfly_app/domain/domain.dart';
 
@@ -25,11 +30,17 @@ class DependencyInjection {
     getIt.registerFactory<HomeDatasource>(
       () => HomeDatasource(getIt()),
     );
+    getIt.registerFactory<ExpenseDatasource>(
+      () => ExpenseDatasource(getIt()),
+    );
   }
 
   void registerRepository() {
     getIt.registerFactory<HomeRepository>(
       () => HomeRepositoryImpl(getIt()),
+    );
+    getIt.registerFactory<ExpenseRepository>(
+      () => ExpenseRepositoryImpl(getIt()),
     );
   }
 
@@ -43,6 +54,9 @@ class DependencyInjection {
     getIt.registerFactory<ListExpensesUseCase>(
       () => ListExpensesUseCase(getIt()),
     );
+    getIt.registerFactory<UpdateExpenseUseCase>(
+      () => UpdateExpenseUseCase(getIt()),
+    );
   }
 
   void registerCubit() {
@@ -53,6 +67,7 @@ class DependencyInjection {
         listExpensesUseCase: getIt(),
       ),
     );
+    getIt.registerFactory<ExpenseCubit>(() => ExpenseCubit(getIt()));
   }
 
 }

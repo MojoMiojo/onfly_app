@@ -2,9 +2,11 @@ part of '../home_page.dart';
 
 class _HomeExpenseCard extends StatefulWidget {
   final ExpenseModel expense;
+  final Function(ExpenseModel) onEdit;
 
   const _HomeExpenseCard({
     required this.expense,
+    required this.onEdit,
   });
 
   @override
@@ -61,7 +63,7 @@ class _HomeExpenseCardState extends State<_HomeExpenseCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.expense.amount.formatToMoney(),
+                      widget.expense.amount.toDouble().formatToMoney(),
                     ),
                     const SizedBox(height: 8),
                     Visibility.maintain(
@@ -101,7 +103,7 @@ class _HomeExpenseCardState extends State<_HomeExpenseCard> {
                     children: [
                       Expanded(
                         child: OnflyFilledButton(
-                          onPressed: () {},
+                          onPressed: () => widget.onEdit(widget.expense),
                           child: const Text('Editar'),
                         ),
                       ),

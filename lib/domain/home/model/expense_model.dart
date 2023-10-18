@@ -2,7 +2,7 @@ class ExpenseModel {
   final String id;
   final String description;
   final String expenseDate;
-  final double amount;
+  final num amount;
   final String? latitude;
   final String? longitude;
 
@@ -22,7 +22,7 @@ class ExpenseModel {
     String? id,
     String? description,
     String? expenseDate,
-    double? amount,
+    num? amount,
     String? latitude,
     String? longitude,
     bool? isSubmitted,

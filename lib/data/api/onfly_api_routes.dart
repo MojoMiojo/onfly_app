@@ -1,8 +1,10 @@
 class OnflyApiRoutes {
-  final String login;
-
-  OnflyApiRoutes(this.login);
+  final String identity;
+  final String? pathVariables;
+  OnflyApiRoutes(this.identity, {this.pathVariables});
 
   static get authenticate => '/collections/users/auth-with-password';
-  get listExpenses => '/collections/expense_$login/records';
+  get listExpenses => '/collections/expense_$identity/records';
+  get updateExpense => '/collections/expense_$identity/records/$pathVariables';
+
 }

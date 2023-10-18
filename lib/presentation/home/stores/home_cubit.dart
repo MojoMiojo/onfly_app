@@ -10,6 +10,8 @@ class HomeCubit extends Cubit<HomeState> {
   final AuthenticateUseCase _authenticateUseCase;
   final ListExpensesUseCase _listExpensesUseCase;
 
+  List<ExpenseModel>? _expenses;
+
   final LoginModel _loginModel = LoginModel(
     identity: 'ccObDnaf',
     password: 'OSNCJld0',
@@ -32,8 +34,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> authenticate() async {
    
-    final response = await _authenticateUseCase(_loginModel
-    );
+    final response = await _authenticateUseCase(_loginModel);
 
     response.processResult(
       onSuccess: (authenticateToken) {
@@ -47,8 +48,17 @@ class HomeCubit extends Cubit<HomeState> {
     final response = await _listExpensesUseCase(_loginModel);
 
     response.processResult(
-      onSuccess: (expenses) => emit(HomeLoadedState(expenses)),
+      onSuccess: (expenses) {
+        _expenses = expenses;
+        emit(HomeLoadedState(expenses));
+      },
       onFailure: (_) => emit(HomeErrorState()),
     );
   }
+
+  void updateExpenseCallback(ExpenseModel expense) {
+    _expenses![_expenses!.indexWhere((e) => e.id == expense.id)] = expense;
+    emit(HomeLoadedState(_expenses!));
+  }
+
 }

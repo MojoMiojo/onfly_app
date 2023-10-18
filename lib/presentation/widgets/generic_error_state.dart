@@ -4,12 +4,12 @@ import 'package:onfly_app/presentation/utils/onfly_colors.dart';
 import 'package:onfly_app/presentation/widgets/widgets.dart';
 
 class GenericErrorState extends StatelessWidget {
-  final Function onTryAgain;
+  final Function? onTryAgain;
   final String? errorMessage;
 
   const GenericErrorState({
     Key? key,
-    required this.onTryAgain,
+    this.onTryAgain,
     this.errorMessage,
   }) : super(key: key);
 
@@ -41,9 +41,10 @@ class GenericErrorState extends StatelessWidget {
                 ),
               ),
               const Spacer(),
+              if (onTryAgain != null)
               OnflyFilledButton(
                 padding: 16,
-                onPressed: () => onTryAgain(),
+                  onPressed: () => onTryAgain!(),
                 child: const Text('Tentar novamente'),
               ),
               const SizedBox(height: 48),

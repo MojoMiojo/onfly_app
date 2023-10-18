@@ -11,4 +11,10 @@ abstract class ApiHandler {
     required dynamic body,
     Map<String, dynamic>? queryParams,
   });
+
+  Future<dynamic> patch({
+    required String path,
+    required dynamic body,
+    Map<String, dynamic>? queryParams,
+  });
 }

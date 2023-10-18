@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:onfly_app/presentation/utils/onfly_colors.dart';
 
 class OnflyTextField extends StatelessWidget {
+  final String? initialValue;
   final String fieldName;
   final String hintText;
-
+  final List<TextInputFormatter>? masks;
+  final Function(String)? onChanged;
+  final TextEditingController controller;
+  
   const OnflyTextField({
     super.key,
+    this.initialValue,
     required this.fieldName,
     required this.hintText,
+    this.masks,
+    this.onChanged,
+    required this.controller,
   });
 
   @override
@@ -32,6 +41,10 @@ class OnflyTextField extends StatelessWidget {
             ],
           ),
           child: TextFormField(
+            controller: controller,
+            initialValue: initialValue,
+            inputFormatters: masks,
+            onChanged: onChanged,
             decoration: InputDecoration(
               hintText: hintText,
               border: const OutlineInputBorder(

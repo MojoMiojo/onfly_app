@@ -77,6 +77,17 @@ class _HomePageState extends State<HomePage> {
                   shrinkWrap: true,
                   padding: EdgeInsets.zero,
                   itemBuilder: (context, index) => _HomeExpenseCard(
+                    onEdit: (ExpenseModel expense) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ExpensePage(
+                            expenseModel: expense,
+                            editCallback: _cubit.updateExpenseCallback,
+                          ),
+                        ),
+                      );
+                    },
                     expense: state.expenses.elementAt(index),
                   ),
                   separatorBuilder: (context, index) =>
@@ -89,7 +100,7 @@ class _HomePageState extends State<HomePage> {
             bottomNavigationBar: const _HomeBottomNavigationBar(),
           );
         }
-        return const SizedBox.shrink();
+        return const GenericErrorState();
       },
     );
   }

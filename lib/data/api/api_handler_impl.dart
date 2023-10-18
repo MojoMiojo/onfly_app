@@ -58,6 +58,29 @@ class ApiHandlerImpl extends ApiHandler {
     return response.data;
   }
 
+  @override
+  Future patch({
+    required String path,
+    required body,
+    Map<String, dynamic>? queryParams,
+  }) async {
+    final response = await client.dio.patch(
+      path,
+      data: body,
+      queryParameters: queryParams,
+    );
+
+    logRequest(
+      baseUrl: response.requestOptions.baseUrl,
+      path: path,
+      data: response.data,
+      statusMessage: response.statusMessage,
+      statusCode: response.statusCode,
+    );
+
+    return response.data;
+  }
+
   void logRequest({
     required String baseUrl,
     required String path,
@@ -75,4 +98,5 @@ class ApiHandlerImpl extends ApiHandler {
       print(data);
     }
   }
+  
 }
