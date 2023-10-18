@@ -81,6 +81,29 @@ class ApiHandlerImpl extends ApiHandler {
     return response.data;
   }
 
+  @override
+  Future delete({
+    required String path,
+    body,
+    Map<String, dynamic>? queryParams,
+  }) async {
+    final response = await client.dio.delete(
+      path,
+      data: body,
+      queryParameters: queryParams,
+    );
+
+    logRequest(
+      baseUrl: response.requestOptions.baseUrl,
+      path: path,
+      data: response.data,
+      statusMessage: response.statusMessage,
+      statusCode: response.statusCode,
+    );
+
+    return response.data;
+  }
+
   void logRequest({
     required String baseUrl,
     required String path,

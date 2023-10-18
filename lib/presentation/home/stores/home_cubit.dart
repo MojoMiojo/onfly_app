@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onfly_app/domain/home/model/model.dart';
+import 'package:onfly_app/domain/home/use_cases/delete_expense_use_case.dart';
 import 'package:onfly_app/domain/home/use_cases/list_expenses_use_case.dart';
 import 'package:onfly_app/domain/home/use_cases/set_jwt_use_case.dart';
 import 'package:onfly_app/domain/home/use_cases/use_cases.dart';
@@ -9,6 +10,7 @@ class HomeCubit extends Cubit<HomeState> {
   final SetJwtUseCase _setJwtUseCase;
   final AuthenticateUseCase _authenticateUseCase;
   final ListExpensesUseCase _listExpensesUseCase;
+  final DeleteExpenseUseCase _deleteExpenseUseCase;
 
   List<ExpenseModel>? _expenses;
 
@@ -21,9 +23,11 @@ class HomeCubit extends Cubit<HomeState> {
     required SetJwtUseCase setJwtUseCase,
     required AuthenticateUseCase authenticateUseCase,
     required ListExpensesUseCase listExpensesUseCase,
+    required DeleteExpenseUseCase deleteExpenseUseCase,
   })  : _setJwtUseCase = setJwtUseCase,
         _authenticateUseCase = authenticateUseCase,
         _listExpensesUseCase = listExpensesUseCase,
+        _deleteExpenseUseCase = deleteExpenseUseCase,
         super(HomeInitialState());
 
   void fetch() async {
@@ -64,6 +68,25 @@ class HomeCubit extends Cubit<HomeState> {
   void createExpenseCallback(ExpenseModel expense) {
     _expenses!.add(expense);
     emit(HomeLoadedState(_expenses!));
+  }
+
+  Future<void> deleteExpense(String id) async {
+    emit(HomeLoadingState());
+
+    var response = await _deleteExpenseUseCase(
+      DeleteExpenseParams(
+        _loginModel,
+        id,
+      ),
+    );
+
+    response.processResult(
+      onSuccess: (_) {
+        _expenses!.removeWhere((element) => element.id == id);
+        emit(HomeLoadedState(_expenses!));
+      },
+      onFailure: (_) => emit(HomeErrorState()),
+    );
   }
 
 }

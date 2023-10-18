@@ -9,4 +9,9 @@ abstract class HomeRepository {
   Future<Result<List<ExpenseModel>, Exception>> listExpenses(
     LoginModel loginModel,
   );
+
+  Future<Result<bool, Exception>> deleteExpense(
+    LoginModel loginModel,
+    String id,
+  );
 }

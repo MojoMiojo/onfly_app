@@ -38,4 +38,17 @@ class HomeRepositoryImpl extends OnflyBaseRepository implements HomeRepository {
       return handleFailure(error: e, trace: t);
     }
   }
+  
+  @override
+  Future<Result<bool, Exception>> deleteExpense(
+    LoginModel loginModel,
+    String id,
+  ) async {
+    try {
+      await _datasource.deleteExpense(loginModel.identity, id);
+      return Result.success(true);
+    } catch (e, t) {
+      return handleFailure(error: e, trace: t);
+    }
+  }
 }

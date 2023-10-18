@@ -7,6 +7,7 @@ import 'package:onfly_app/data/home/repository/home_respository_impl.dart';
 import 'package:onfly_app/domain/expense/repository/expense_repository.dart';
 import 'package:onfly_app/domain/expense/use_cases/create_expense_use_case.dart';
 import 'package:onfly_app/domain/expense/use_cases/update_expense_use_case.dart';
+import 'package:onfly_app/domain/home/use_cases/delete_expense_use_case.dart';
 import 'package:onfly_app/presentation/expense/stores/expense_cubit.dart';
 import 'package:onfly_app/presentation/presentation.dart';
 import 'package:onfly_app/domain/domain.dart';
@@ -61,6 +62,9 @@ class DependencyInjection {
     getIt.registerFactory<CreateExpenseUseCase>(
       () => CreateExpenseUseCase(getIt()),
     );
+    getIt.registerFactory<DeleteExpenseUseCase>(
+      () => DeleteExpenseUseCase(getIt()),
+    );
   }
 
   void registerCubit() {
@@ -69,6 +73,7 @@ class DependencyInjection {
         authenticateUseCase: getIt(),
         setJwtUseCase: getIt(),
         listExpensesUseCase: getIt(),
+          deleteExpenseUseCase: getIt()
       ),
     );
     getIt.registerFactory<ExpenseCubit>(

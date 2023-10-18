@@ -18,4 +18,13 @@ class HomeDatasource {
       path: OnflyApiRoutes(login).createOrlistExpenses,
     );
   }
+
+  Future<dynamic> deleteExpense(dynamic identity, dynamic pathVariables) async {
+    return await _client.delete(
+      path: OnflyApiRoutes(
+        identity,
+        pathVariables: pathVariables,
+      ).updateExpense,
+    );
+  }
 }

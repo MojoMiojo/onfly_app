@@ -3,10 +3,12 @@ part of '../home_page.dart';
 class _HomeExpenseCard extends StatefulWidget {
   final ExpenseModel expense;
   final Function(ExpenseModel) onEdit;
+  final Function(String) onDelete;
 
   const _HomeExpenseCard({
     required this.expense,
     required this.onEdit,
+    required this.onDelete,
   });
 
   @override
@@ -110,7 +112,7 @@ class _HomeExpenseCardState extends State<_HomeExpenseCard> {
                       const SizedBox(width: 16),
                       Expanded(
                         child: OnflyFilledButton(
-                          onPressed: () {},
+                          onPressed: () => widget.onDelete(widget.expense.id),
                           child: const Text('Apagar'),
                         ),
                       ),
