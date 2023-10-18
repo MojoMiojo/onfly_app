@@ -25,9 +25,9 @@ extension ExpenseDTO on ExpenseModel {
   Map<String, dynamic> fromDomain() {
     final result = <String, dynamic>{};
 
-    result.addAll({'id': id});
+    if (id.isNotEmpty) result.addAll({'id': id});
     result.addAll({'description': description});
-    result.addAll({'expenseDate': expenseDate});
+    result.addAll({'expense_date': expenseDate});
     result.addAll({'amount': amount});
     if (latitude != null) {
       result.addAll({'latitude': latitude});

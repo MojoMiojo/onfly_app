@@ -11,11 +11,13 @@ import 'package:onfly_app/presentation/utils/extensions/text_input_masks.dart';
 class ExpensePage extends StatefulWidget {
   final ExpenseModel? expenseModel;
   final Function(ExpenseModel expense)? editCallback;
+  final Function(ExpenseModel expense)? addCallback;
 
   const ExpensePage({
     Key? key,
     this.expenseModel,
     this.editCallback,
+    this.addCallback,
   }) : super(key: key);
 
   @override
@@ -80,12 +82,20 @@ class _ExpensePageState extends State<ExpensePage> {
                   const SizedBox(height: 24),
                   OnflyFilledButton(
                     onPressed: () {
-                      if (widget.editCallback != null) {
+                      widget.editCallback != null
+                          ?
                         _cubit.updateExpense(
-                          (expense) => widget.editCallback!(expense),
-                        );
-                      }
-                      Navigator.pop(context);
+                              (expense) {
+                                Navigator.pop(context);
+                                return widget.editCallback!(expense);
+                              },
+                            )
+                          : _cubit.createExpense(
+                              (expense) {
+                                Navigator.pop(context);
+                                return widget.addCallback!(expense);
+                              },
+                            );
                     },
                     padding: 16,
                     child: Text(
@@ -100,7 +110,7 @@ class _ExpensePageState extends State<ExpensePage> {
               ),
             );
           }
-          return const GenericErrorState();
+          return GenericErrorState(onTryAgain: () => _cubit.emitLoadedState());
         },
       ),
     );

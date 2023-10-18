@@ -6,4 +6,9 @@ abstract class ExpenseRepository {
     LoginModel loginModel,
     ExpenseModel expenseModel,
   );
+
+  Future<Result<ExpenseModel, Exception>> createExpense(
+    LoginModel loginModel,
+    ExpenseModel expenseModel,
+  );
 }

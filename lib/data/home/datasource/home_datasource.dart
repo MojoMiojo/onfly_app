@@ -15,7 +15,7 @@ class HomeDatasource {
 
   Future<dynamic> listExpenses(dynamic login) async {
     return await _client.get(
-      path: OnflyApiRoutes(login).listExpenses,
+      path: OnflyApiRoutes(login).createOrlistExpenses,
     );
   }
 }

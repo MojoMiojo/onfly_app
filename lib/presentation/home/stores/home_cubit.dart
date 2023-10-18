@@ -61,4 +61,9 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeLoadedState(_expenses!));
   }
 
+  void createExpenseCallback(ExpenseModel expense) {
+    _expenses!.add(expense);
+    emit(HomeLoadedState(_expenses!));
+  }
+
 }

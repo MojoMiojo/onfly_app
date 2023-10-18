@@ -18,6 +18,16 @@ class ExpenseModel {
     required this.isSubmitted,
   });
 
+  ExpenseModel.create({
+    this.id = '',
+    required this.description,
+    required this.expenseDate,
+    required this.amount,
+    this.latitude,
+    this.longitude,
+    this.isSubmitted = false,
+  });
+
   ExpenseModel copyWith({
     String? id,
     String? description,

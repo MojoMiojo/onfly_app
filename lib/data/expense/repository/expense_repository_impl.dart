@@ -29,4 +29,21 @@ class ExpenseRepositoryImpl extends OnflyBaseRepository
       return handleFailure(error: e, trace: t);
     }
   }
+
+  @override
+  Future<Result<ExpenseModel, Exception>> createExpense(
+    LoginModel loginModel,
+    ExpenseModel expenseModel,
+  ) async {
+    try {
+      final response = await _datasource.createExpense(
+        expenseModel.fromDomain(),
+        loginModel.identity,
+      );
+
+      return Result.success(ExpenseDTO.fromData(response));
+    } catch (e, t) {
+      return handleFailure(error: e, trace: t);
+    }
+  }
 }

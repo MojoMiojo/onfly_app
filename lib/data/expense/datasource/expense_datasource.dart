@@ -16,4 +16,11 @@ class ExpenseDatasource {
       body: body,
     );
   }
+
+  Future<dynamic> createExpense(dynamic body, dynamic identity) async {
+    return await _client.post(
+      path: OnflyApiRoutes(identity).createOrlistExpenses,
+      body: body,
+    );
+  }
 }

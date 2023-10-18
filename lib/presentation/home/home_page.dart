@@ -96,7 +96,16 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            floatingActionButton: const _HomeFloatingActionButton(),
+            floatingActionButton: _HomeFloatingActionButton(
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ExpensePage(
+                    addCallback: _cubit.createExpenseCallback,
+                  ),
+                ),
+              ),
+            ),
             bottomNavigationBar: const _HomeBottomNavigationBar(),
           );
         }

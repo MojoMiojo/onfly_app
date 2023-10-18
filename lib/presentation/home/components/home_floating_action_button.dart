@@ -1,7 +1,9 @@
 part of '../home_page.dart';
 
 class _HomeFloatingActionButton extends StatefulWidget {
-  const _HomeFloatingActionButton();
+  final Function onPressed;
+
+  const _HomeFloatingActionButton(this.onPressed);
 
   @override
   State<_HomeFloatingActionButton> createState() =>
@@ -12,12 +14,7 @@ class _HomeFloatingActionButtonState extends State<_HomeFloatingActionButton> {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ExpensePage()),
-        );
-      },
+      onPressed: () => widget.onPressed.call(),
       child: const Icon(
         Icons.add,
       ),
