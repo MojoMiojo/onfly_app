@@ -37,7 +37,7 @@ class ExpenseRepositoryImpl extends OnflyBaseRepository
   ) async {
     try {
       final response = await _datasource.createExpense(
-        expenseModel.fromDomain(),
+        expenseModel.fromDomain(withId: false),
         loginModel.identity,
       );
 

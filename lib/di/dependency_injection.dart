@@ -97,6 +97,7 @@ class DependencyInjection {
         deleteExpenseUseCase: getIt(),
         getPersistedExpensesUseCase: getIt(),
         removePersistedExpenseUseCase: getIt(),
+        createExpenseUseCase: getIt(),
       ),
     );
     getIt.registerFactory<ExpenseCubit>(

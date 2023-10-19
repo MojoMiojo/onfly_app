@@ -77,6 +77,9 @@ class _HomePageState extends State<HomePage> {
                   shrinkWrap: true,
                   padding: EdgeInsets.zero,
                   itemBuilder: (context, index) => _HomeExpenseCard(
+                    expense: state.expenses.elementAt(index),
+                    onSync: (expense) => _cubit.syncExpense(expense),
+                    onDelete: (expense) => _cubit.deleteExpense(expense),
                     onEdit: (ExpenseModel expense) {
                       Navigator.push(
                         context,
@@ -88,8 +91,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     },
-                    onDelete: (expense) => _cubit.deleteExpense(expense),
-                    expense: state.expenses.elementAt(index),
                   ),
                   separatorBuilder: (context, index) =>
                       const SizedBox(height: 8),

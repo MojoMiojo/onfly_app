@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:onfly_app/domain/expense/use_cases/create_expense_use_case.dart';
 import 'package:onfly_app/domain/home/model/model.dart';
 import 'package:onfly_app/domain/home/use_cases/delete_expense_use_case.dart';
 import 'package:onfly_app/domain/home/use_cases/list_expenses_use_case.dart';
@@ -16,6 +17,7 @@ class HomeCubit extends Cubit<HomeState> {
   final DeleteExpenseUseCase _deleteExpenseUseCase;
   final GetPersistedExpensesUseCase _getPersistedExpensesUseCase;
   final RemovePersistedExpenseUseCase _removePersistedExpenseUseCase;
+  final CreateExpenseUseCase _createExpenseUseCase;
 
   List<ExpenseModel> _expenses = [];
 
@@ -31,12 +33,14 @@ class HomeCubit extends Cubit<HomeState> {
     required DeleteExpenseUseCase deleteExpenseUseCase,
     required GetPersistedExpensesUseCase getPersistedExpensesUseCase,
     required RemovePersistedExpenseUseCase removePersistedExpenseUseCase,
+    required CreateExpenseUseCase createExpenseUseCase,
   })  : _setJwtUseCase = setJwtUseCase,
         _authenticateUseCase = authenticateUseCase,
         _listExpensesUseCase = listExpensesUseCase,
         _deleteExpenseUseCase = deleteExpenseUseCase,
         _getPersistedExpensesUseCase = getPersistedExpensesUseCase,
         _removePersistedExpenseUseCase = removePersistedExpenseUseCase,
+        _createExpenseUseCase = createExpenseUseCase,
         super(HomeInitialState());
 
   void fetch() async {
@@ -118,6 +122,26 @@ class HomeCubit extends Cubit<HomeState> {
         emit(HomeLoadedState(_expenses));
       },
       onFailure: (_) => emit(HomeErrorState()),
+    );
+  }
+
+  Future<void> syncExpense(ExpenseModel expense) async {
+    emit(HomeLoadingState());
+
+    var response = await _createExpenseUseCase(
+      CreateExpenseParams(
+        _loginModel,
+        expense,
+      ),
+    );
+
+    response.processResult(
+      onSuccess: (syncedExpense) {
+        _expenses[_expenses.indexWhere((e) => e.id == expense.id)] =
+            syncedExpense;
+        _deletePersistedExpense(expense.id);
+      },
+      onFailure: (onFailure) => emit(HomeErrorState()),
     );
   }
 

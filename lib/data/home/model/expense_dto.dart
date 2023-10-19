@@ -22,10 +22,10 @@ extension ExpenseDTO on ExpenseModel {
     return expenses.map((expense) => fromData(expense)).toList();
   }
 
-  Map<String, dynamic> fromDomain() {
+  Map<String, dynamic> fromDomain({bool withId = true}) {
     final result = <String, dynamic>{};
 
-    result.addAll({'id': id});
+    if (withId) result.addAll({'id': id});
     result.addAll({'description': description});
     result.addAll({'expense_date': expenseDate});
     result.addAll({'amount': amount});

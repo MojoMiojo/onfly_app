@@ -4,11 +4,13 @@ class _HomeExpenseCard extends StatefulWidget {
   final ExpenseModel expense;
   final Function(ExpenseModel) onEdit;
   final Function(ExpenseModel) onDelete;
+  final Function(ExpenseModel) onSync;
 
   const _HomeExpenseCard({
     required this.expense,
     required this.onEdit,
     required this.onDelete,
+    required this.onSync,
   });
 
   @override
@@ -68,7 +70,7 @@ class _HomeExpenseCardState extends State<_HomeExpenseCard> {
                 const SizedBox(width: 16),
                 Flexible(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
                         widget.expense.amount.toDouble().formatToMoney(),
@@ -76,9 +78,27 @@ class _HomeExpenseCardState extends State<_HomeExpenseCard> {
                       const SizedBox(height: 8),
                       Visibility.maintain(
                         visible: !widget.expense.isSubmitted,
-                        child: Icon(
-                          Icons.wifi_off_rounded,
-                          color: OnflyColors.burntSienna,
+                        child: InkWell(
+                          onTap: () => !widget.expense.isSubmitted
+                              ? widget.onSync(widget.expense)
+                              : null,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                'Try sync',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: OnflyColors.burntSienna,
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Icon(
+                                Icons.wifi_off_rounded,
+                                color: OnflyColors.burntSienna,
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     ],
@@ -113,14 +133,14 @@ class _HomeExpenseCardState extends State<_HomeExpenseCard> {
                       Expanded(
                         child: OnflyFilledButton(
                           onPressed: () => widget.onEdit(widget.expense),
-                          child: const Text('Editar'),
+                          child: const Text('Edit'),
                         ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
                         child: OnflyFilledButton(
                           onPressed: () => widget.onDelete(widget.expense),
-                          child: const Text('Apagar'),
+                          child: const Text('Erase'),
                         ),
                       ),
                     ],
