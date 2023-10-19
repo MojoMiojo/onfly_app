@@ -26,6 +26,8 @@ class HomeCubit extends Cubit<HomeState> {
     password: 'OSNCJld0',
   );
 
+  bool _isAuthenticated = false;
+
   HomeCubit({
     required SetJwtUseCase setJwtUseCase,
     required AuthenticateUseCase authenticateUseCase,
@@ -48,7 +50,6 @@ class HomeCubit extends Cubit<HomeState> {
     await _authenticate();
     await _listExpenses();
     await _listPersistedExpenses();
-    emit(HomeLoadedState(_expenses));
   }
 
   Future<void> _authenticate() async {
@@ -57,8 +58,9 @@ class HomeCubit extends Cubit<HomeState> {
     response.processResult(
       onSuccess: (authenticateToken) {
         _setJwtUseCase(authenticateToken);
+        _isAuthenticated = true;
       },
-      onFailure: (_) => emit(HomeErrorState()),
+      onFailure: (_) {},
     );
   }
 
@@ -66,7 +68,10 @@ class HomeCubit extends Cubit<HomeState> {
     final response = await _listExpensesUseCase(_loginModel);
 
     response.processResult(
-      onSuccess: (expenses) => _expenses = expenses,
+      onSuccess: (expenses) {
+        _expenses = expenses;
+        emit(HomeLoadedState(_expenses));
+      },
       onFailure: (_) => emit(HomeErrorState()),
     );
   }
@@ -75,7 +80,10 @@ class HomeCubit extends Cubit<HomeState> {
     final response = await _getPersistedExpensesUseCase(NoParams());
 
     response.processResult(
-      onSuccess: (expenses) => _expenses.addAll(expenses),
+      onSuccess: (expenses) {
+        _expenses.addAll(expenses);
+        emit(HomeLoadedState(_expenses));
+      },
       onFailure: (_) {},
     );
   }
@@ -126,6 +134,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> syncExpense(ExpenseModel expense) async {
+    if (!_isAuthenticated) await _authenticate();
     emit(HomeLoadingState());
 
     var response = await _createExpenseUseCase(
