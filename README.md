@@ -2,7 +2,7 @@
 
 A new Flutter project to register your trip expense with internet connection or no.
 
-<img width="465" alt="image" src="https://github.com/MojoMiojo/onfly_app/assets/42383407/d1c74334-0086-41db-b889-67b5e1ce97c7">
+<img width="690" alt="image" src="https://github.com/MojoMiojo/onfly_app/assets/42383407/696c1616-1501-491e-b83a-36f1b5f2c5fd">
 
 ## how to run
 
