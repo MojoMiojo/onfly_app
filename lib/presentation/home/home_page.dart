@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     },
-                    onDelete: (id) => _cubit.deleteExpense(id),
+                    onDelete: (expense) => _cubit.deleteExpense(expense),
                     expense: state.expenses.elementAt(index),
                   ),
                   separatorBuilder: (context, index) =>

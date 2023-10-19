@@ -5,6 +5,7 @@ import 'package:onfly_app/domain/home/use_cases/list_expenses_use_case.dart';
 import 'package:onfly_app/domain/home/use_cases/set_jwt_use_case.dart';
 import 'package:onfly_app/domain/home/use_cases/use_cases.dart';
 import 'package:onfly_app/domain/shared/use_cases/get_persisted_expenses_use_case.dart';
+import 'package:onfly_app/domain/shared/use_cases/remove_persisted_expense_use_case.dart';
 import 'package:onfly_app/domain/utils/onfly_base_use_case.dart';
 import 'package:onfly_app/presentation/home/stores/home_state.dart';
 
@@ -14,6 +15,7 @@ class HomeCubit extends Cubit<HomeState> {
   final ListExpensesUseCase _listExpensesUseCase;
   final DeleteExpenseUseCase _deleteExpenseUseCase;
   final GetPersistedExpensesUseCase _getPersistedExpensesUseCase;
+  final RemovePersistedExpenseUseCase _removePersistedExpenseUseCase;
 
   List<ExpenseModel> _expenses = [];
 
@@ -28,12 +30,13 @@ class HomeCubit extends Cubit<HomeState> {
     required ListExpensesUseCase listExpensesUseCase,
     required DeleteExpenseUseCase deleteExpenseUseCase,
     required GetPersistedExpensesUseCase getPersistedExpensesUseCase,
-    
+    required RemovePersistedExpenseUseCase removePersistedExpenseUseCase,
   })  : _setJwtUseCase = setJwtUseCase,
         _authenticateUseCase = authenticateUseCase,
         _listExpensesUseCase = listExpensesUseCase,
         _deleteExpenseUseCase = deleteExpenseUseCase,
         _getPersistedExpensesUseCase = getPersistedExpensesUseCase,
+        _removePersistedExpenseUseCase = removePersistedExpenseUseCase,
         super(HomeInitialState());
 
   void fetch() async {
@@ -45,7 +48,6 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> _authenticate() async {
-   
     final response = await _authenticateUseCase(_loginModel);
 
     response.processResult(
@@ -84,15 +86,31 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeLoadedState(_expenses));
   }
 
-  Future<void> deleteExpense(String id) async {
+  Future<void> deleteExpense(ExpenseModel model) async {
+    if (!model.isSubmitted) return _deletePersistedExpense(model.id);
+    
     emit(HomeLoadingState());
 
     var response = await _deleteExpenseUseCase(
       DeleteExpenseParams(
         _loginModel,
-        id,
+        model.id,
       ),
     );
+
+    response.processResult(
+      onSuccess: (_) {
+        _expenses.removeWhere((element) => element.id == model.id);
+        emit(HomeLoadedState(_expenses));
+      },
+      onFailure: (_) => emit(HomeErrorState()),
+    );
+  }
+
+  Future<void> _deletePersistedExpense(String id) async {
+    emit(HomeLoadingState());
+
+    var response = await _removePersistedExpenseUseCase(id);
 
     response.processResult(
       onSuccess: (_) {
