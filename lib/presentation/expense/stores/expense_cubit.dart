@@ -13,8 +13,6 @@ class ExpenseCubit extends Cubit<ExpenseState> {
   final UpdateExpenseUseCase _updateExpenseUseCase;
   final CreateExpenseUseCase _createExpenseUseCase;
   final PersistExpenseUseCase _persistExpenseUseCase;
-  
-  ExpenseModel? _expenseModel;
 
   ExpenseCubit({
     required UpdateExpenseUseCase updateExpenseUseCase,
@@ -34,11 +32,11 @@ class ExpenseCubit extends Cubit<ExpenseState> {
   final GlobalKey<FormState> expenseDateFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> amountFormKey = GlobalKey<FormState>();
   
+  ExpenseModel? _expenseModel;
+
   void fetch({ExpenseModel? expenseModel}) {
     if (expenseModel != null) _initFields(expenseModel);
-
     _expenseModel = expenseModel;
-
     emitLoadedState();
   }
 
@@ -56,23 +54,29 @@ class ExpenseCubit extends Cubit<ExpenseState> {
     ));
   }
 
-  Future<void> updateExpense(Function(ExpenseModel expense) onSuccess) async {
+  Future<void> updateExpense(
+    Function(ExpenseModel expense) editExpenseCallback,
+  ) async {
     emit(ExpenseLoadingState());
+
+    var editedExpense = _expenseModel!.copyWith(
+      description: _description.text,
+      expenseDate: parsedExpenseDate(),
+      amount: double.parse(_amount.text),
+    );
 
     var params = UpdateExpenseParams(
       LoginModel(identity: 'ccObDnaf', password: ''),
-      _expenseModel!.copyWith(
-        description: _description.text,
-        expenseDate: DateTime.now().toString(),
-        amount: double.parse(_amount.text),
-      ),
+      editedExpense,
     );
 
     var response = await _updateExpenseUseCase(params);
 
     response.processResult(
-      onSuccess: (expense) => onSuccess(expense),
-      onFailure: (_) => emit(ExpenseErrorState()),
+      onSuccess: (expense) => editExpenseCallback(expense),
+      onFailure: (_) async {
+        editExpenseCallback(editedExpense.copyWith(isEditPending: true));
+      },
     );
   }
 

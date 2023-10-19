@@ -49,7 +49,31 @@ class _HomePageState extends State<HomePage> {
         }
         if (state is HomeLoadedState) {
           return Scaffold(
-            appBar: const OnflyAppBar(),
+            appBar: OnflyAppBar(
+              actions: state.isAuthenticated
+                  ? null
+                  : [
+                      InkWell(
+                        onTap: () => _cubit.tryAuth(),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Offline',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  color: OnflyColors.white,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              const Icon(Icons.sync_problem_rounded)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+            ),
             body: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               children: [

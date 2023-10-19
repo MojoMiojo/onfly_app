@@ -7,6 +7,7 @@ class ExpenseModel {
   final String? longitude;
 
   final bool isSubmitted;
+  final bool isEditPending;
 
   ExpenseModel({
     required this.id,
@@ -16,6 +17,7 @@ class ExpenseModel {
     this.latitude,
     this.longitude,
     required this.isSubmitted,
+    this.isEditPending = false,
   });
 
   ExpenseModel.create({
@@ -26,6 +28,7 @@ class ExpenseModel {
     this.latitude,
     this.longitude,
     this.isSubmitted = false,
+    this.isEditPending = false,
   });
 
   ExpenseModel copyWith({
@@ -36,6 +39,7 @@ class ExpenseModel {
     String? latitude,
     String? longitude,
     bool? isSubmitted,
+    bool? isEditPending,
   }) {
     return ExpenseModel(
       id: id ?? this.id,
@@ -45,6 +49,7 @@ class ExpenseModel {
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
       isSubmitted: isSubmitted ?? this.isSubmitted,
+      isEditPending: isEditPending ?? this.isEditPending,
     );
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onfly_app/domain/expense/use_cases/create_expense_use_case.dart';
+import 'package:onfly_app/domain/expense/use_cases/update_expense_use_case.dart';
 import 'package:onfly_app/domain/home/model/model.dart';
 import 'package:onfly_app/domain/home/use_cases/delete_expense_use_case.dart';
 import 'package:onfly_app/domain/home/use_cases/list_expenses_use_case.dart';
@@ -18,6 +19,7 @@ class HomeCubit extends Cubit<HomeState> {
   final GetPersistedExpensesUseCase _getPersistedExpensesUseCase;
   final RemovePersistedExpenseUseCase _removePersistedExpenseUseCase;
   final CreateExpenseUseCase _createExpenseUseCase;
+  final UpdateExpenseUseCase _updateExpenseUseCase;
 
   List<ExpenseModel> _expenses = [];
 
@@ -36,6 +38,7 @@ class HomeCubit extends Cubit<HomeState> {
     required GetPersistedExpensesUseCase getPersistedExpensesUseCase,
     required RemovePersistedExpenseUseCase removePersistedExpenseUseCase,
     required CreateExpenseUseCase createExpenseUseCase,
+    required UpdateExpenseUseCase updateExpenseUseCase,
   })  : _setJwtUseCase = setJwtUseCase,
         _authenticateUseCase = authenticateUseCase,
         _listExpensesUseCase = listExpensesUseCase,
@@ -43,16 +46,17 @@ class HomeCubit extends Cubit<HomeState> {
         _getPersistedExpensesUseCase = getPersistedExpensesUseCase,
         _removePersistedExpenseUseCase = removePersistedExpenseUseCase,
         _createExpenseUseCase = createExpenseUseCase,
+        _updateExpenseUseCase = updateExpenseUseCase,
         super(HomeInitialState());
 
   void fetch() async {
-    emit(HomeLoadingState());
     await _authenticate();
     await _listExpenses();
     await _listPersistedExpenses();
   }
 
   Future<void> _authenticate() async {
+    emit(HomeLoadingState());
     final response = await _authenticateUseCase(_loginModel);
 
     response.processResult(
@@ -70,7 +74,7 @@ class HomeCubit extends Cubit<HomeState> {
     response.processResult(
       onSuccess: (expenses) {
         _expenses = expenses;
-        emit(HomeLoadedState(_expenses));
+        emit(HomeLoadedState(_expenses, _isAuthenticated));
       },
       onFailure: (_) => emit(HomeErrorState()),
     );
@@ -81,8 +85,12 @@ class HomeCubit extends Cubit<HomeState> {
 
     response.processResult(
       onSuccess: (expenses) {
-        _expenses.addAll(expenses);
-        emit(HomeLoadedState(_expenses));
+        _expenses.forEach((element) {
+          if (!_expenses.contains(element)) {
+            _expenses.add(element);
+          }
+        });
+        emit(HomeLoadedState(_expenses, _isAuthenticated));
       },
       onFailure: (_) {},
     );
@@ -90,12 +98,14 @@ class HomeCubit extends Cubit<HomeState> {
 
   void updateExpenseCallback(ExpenseModel expense) {
     _expenses[_expenses.indexWhere((e) => e.id == expense.id)] = expense;
-    emit(HomeLoadedState(_expenses));
+    emit(HomeLoadedState(_expenses, _isAuthenticated));
+
   }
 
   void createExpenseCallback(ExpenseModel expense) {
     _expenses.add(expense);
-    emit(HomeLoadedState(_expenses));
+    emit(HomeLoadedState(_expenses, _isAuthenticated));
+
   }
 
   Future<void> deleteExpense(ExpenseModel model) async {
@@ -113,7 +123,8 @@ class HomeCubit extends Cubit<HomeState> {
     response.processResult(
       onSuccess: (_) {
         _expenses.removeWhere((element) => element.id == model.id);
-        emit(HomeLoadedState(_expenses));
+        emit(HomeLoadedState(_expenses, _isAuthenticated));
+
       },
       onFailure: (_) => emit(HomeErrorState()),
     );
@@ -127,7 +138,8 @@ class HomeCubit extends Cubit<HomeState> {
     response.processResult(
       onSuccess: (_) {
         _expenses.removeWhere((element) => element.id == id);
-        emit(HomeLoadedState(_expenses));
+        emit(HomeLoadedState(_expenses, _isAuthenticated));
+
       },
       onFailure: (_) => emit(HomeErrorState()),
     );
@@ -135,6 +147,8 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> syncExpense(ExpenseModel expense) async {
     if (!_isAuthenticated) await _authenticate();
+    if (!expense.isSubmitted && expense.isEditPending)
+      return _syncEditedExpense(expense);
     emit(HomeLoadingState());
 
     var response = await _createExpenseUseCase(
@@ -152,6 +166,31 @@ class HomeCubit extends Cubit<HomeState> {
       },
       onFailure: (onFailure) => emit(HomeErrorState()),
     );
+  }
+
+  Future<void> _syncEditedExpense(ExpenseModel expense) async {
+    if (!_isAuthenticated) await _authenticate();
+    emit(HomeLoadingState());
+
+    var response = await _updateExpenseUseCase(
+      UpdateExpenseParams(
+        _loginModel,
+        expense,
+      ),
+    );
+
+    response.processResult(
+      onSuccess: (expense) {
+        _expenses[_expenses.indexWhere((e) => e.id == expense.id)] = expense;
+        emit(HomeLoadedState(_expenses, _isAuthenticated));
+      },
+      onFailure: (onFailure) => emit(HomeErrorState()),
+    );
+  }
+
+  void tryAuth() async {
+    await _authenticate();
+    emit(HomeLoadedState(_expenses, _isAuthenticated));
   }
 
 }

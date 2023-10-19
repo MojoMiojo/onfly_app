@@ -77,11 +77,15 @@ class _HomeExpenseCardState extends State<_HomeExpenseCard> {
                       ),
                       const SizedBox(height: 8),
                       Visibility.maintain(
-                        visible: !widget.expense.isSubmitted,
+                        visible: !widget.expense.isSubmitted ||
+                            widget.expense.isEditPending,
                         child: InkWell(
-                          onTap: () => !widget.expense.isSubmitted
+                          onTap: () => !widget.expense.isSubmitted ||
+                                  widget.expense.isEditPending
                               ? widget.onSync(widget.expense)
-                              : null,
+                              : setState(() {
+                                  isCollapsed = !isCollapsed;
+                                }),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
