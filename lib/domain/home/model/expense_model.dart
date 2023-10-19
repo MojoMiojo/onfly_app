@@ -19,7 +19,7 @@ class ExpenseModel {
   });
 
   ExpenseModel.create({
-    this.id = '',
+    required this.id,
     required this.description,
     required this.expenseDate,
     required this.amount,

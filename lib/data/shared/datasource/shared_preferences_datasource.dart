@@ -8,43 +8,61 @@ class SharedPreferencesDatasource {
   late SharedPreferences prefs;
 
   Future<void> writeExpense(dynamic id, dynamic data) async {
-    List<String> items = await _getExpensesId();
+    List<String> expenses = await _getExpensesId();
 
     await prefs.setString(id, data);
-    if (!items.contains(id)) {
-      items.add(id);
+    if (!expenses.contains(id)) {
+      expenses.add(id);
     }
-
+    _saveExpensesId(expenses);
     _debugPrint('SharedPreferences [writeExpense] | ${data.toString()}');
   }
 
   Future<void> removeExpense(dynamic id) async {
-    List<String> items = await _getExpensesId();
-    var wasRemoved = await prefs.remove('counter');
+    List<String> expenses = await _getExpensesId();
+    var wasRemoved = await prefs.remove(id);
     if (!wasRemoved) return;
 
-    items.removeWhere((element) => element == id);
+    expenses.removeWhere((element) => element == id);
+    _saveExpensesId(expenses);
+  }
+
+  Future<List<dynamic>> readAllExpense() async {
+    List<String> expensesId = await _getExpensesId();
+    List<dynamic> expenses = [];
+
+    for (var id in expensesId) {
+      var expense = await readExpense(id);
+      expenses.add(expense);
+    }
+
+    return expenses;
   }
 
   Future<dynamic> readExpense(dynamic id) async {
-    List<String> items = await _getExpensesId();
+    List<String> expenses = await _getExpensesId();
 
-    if (!items.contains(id)) throw UnkownException();
-    final String? action = prefs.getString('action');
+    if (!expenses.contains(id)) throw UnkownException();
+    final String? expense = prefs.getString(id);
 
-    return action;
+    return expense;
   }
 
   Future<List<String>> _getExpensesId() async {
     prefs = await SharedPreferences.getInstance();
-    List<String>? items = prefs.getStringList(expenseIds);
+    List<String>? expenses = prefs.getStringList(expenseIds);
 
-    if (items == null) {
+    if (expenses == null) {
       var expenseIdsExists = await prefs.setStringList(expenseIds, <String>[]);
       if (expenseIdsExists) throw UnkownException();
     }
 
-    return items = prefs.getStringList(expenseIds)!;
+    return expenses = prefs.getStringList(expenseIds)!;
+  }
+
+  Future<void> _saveExpensesId(List<String> expenses) async {
+    var expensesIdSaved = await prefs.setStringList(expenseIds, expenses);
+    if (!expensesIdSaved) throw UnkownException();
   }
 
   void _debugPrint(dynamic data) {

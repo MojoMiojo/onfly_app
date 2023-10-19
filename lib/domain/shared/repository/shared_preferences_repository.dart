@@ -6,5 +6,5 @@ abstract class SharedPreferencesRepository {
 
   Future<Result<bool, Exception>> removeExpense(String id);
 
-  Future<Result<ExpenseModel, Exception>> readExpense(String id);
+  Future<Result<List<ExpenseModel>, Exception>> readAllExpenses();
 }

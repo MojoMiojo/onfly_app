@@ -78,6 +78,7 @@ class ExpenseCubit extends Cubit<ExpenseState> {
     emit(ExpenseLoadingState());
 
     final expense = ExpenseModel.create(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
       description: _description.text,
       expenseDate: DateTime.now().toString(),
       amount: double.parse(_amount.text),
@@ -86,12 +87,7 @@ class ExpenseCubit extends Cubit<ExpenseState> {
 
     var params = CreateExpenseParams(
       LoginModel(identity: 'ccObDnaf', password: ''),
-      ExpenseModel.create(
-        description: _description.text,
-        expenseDate: DateTime.now().toString(),
-        amount: double.parse(_amount.text),
-        isSubmitted: false,
-      ),
+      expense,
     );
 
     var response = await _createExpenseUseCase(params);
