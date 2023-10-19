@@ -108,7 +108,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            bottomNavigationBar: const _HomeBottomNavigationBar(),
           );
         }
         return const GenericErrorState();

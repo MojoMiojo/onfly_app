@@ -30,6 +30,10 @@ class ExpenseCubit extends Cubit<ExpenseState> {
   final TextEditingController _expenseDate = TextEditingController();
   final TextEditingController _amount = TextEditingController();
 
+  final GlobalKey<FormState> decriptionFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> expenseDateFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> amountFormKey = GlobalKey<FormState>();
+  
   void fetch({ExpenseModel? expenseModel}) {
     if (expenseModel != null) _initFields(expenseModel);
 
@@ -41,7 +45,7 @@ class ExpenseCubit extends Cubit<ExpenseState> {
   void _initFields(ExpenseModel expenseModel) {
     _description.text = expenseModel.description;
     _expenseDate.text = expenseModel.asDate.brazillianDateFormat();
-    _amount.text = expenseModel.amount.toDouble().formatToMoney(symbol: '');
+    _amount.text = expenseModel.amount.toString();
   }
 
   void emitLoadedState() {
@@ -80,7 +84,7 @@ class ExpenseCubit extends Cubit<ExpenseState> {
     final expense = ExpenseModel.create(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       description: _description.text,
-      expenseDate: DateTime.now().toString(),
+      expenseDate: parsedExpenseDate(),
       amount: double.parse(_amount.text),
       isSubmitted: false,
     );
@@ -113,6 +117,17 @@ class ExpenseCubit extends Cubit<ExpenseState> {
     );
 
     return isSuccess;
+  }
+
+  String parsedExpenseDate() {
+    var toParse = '';
+    var splitted = _expenseDate.text.split('/');
+
+    toParse += splitted.last;
+    toParse += splitted.elementAt(1);
+    toParse += splitted.first;
+
+    return DateTime.parse(toParse).toString();
   }
 
 }

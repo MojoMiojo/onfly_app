@@ -67,7 +67,7 @@ class _HomeExpenseCardState extends State<_HomeExpenseCard> {
                     ],
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 8),
                 Flexible(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,

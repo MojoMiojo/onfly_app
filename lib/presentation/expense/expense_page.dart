@@ -7,6 +7,7 @@ import 'package:onfly_app/presentation/expense/stores/expense_cubit.dart';
 import 'package:onfly_app/presentation/expense/stores/expense_state.dart';
 import 'package:onfly_app/presentation/presentation.dart';
 import 'package:onfly_app/presentation/utils/extensions/text_input_masks.dart';
+import 'package:onfly_app/presentation/utils/extensions/text_input_validators.dart';
 
 class ExpensePage extends StatefulWidget {
   final ExpenseModel? expenseModel;
@@ -61,27 +62,46 @@ class _ExpensePageState extends State<ExpensePage> {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 children: [
                   OnflyTextField(
+                    formKey: _cubit.decriptionFormKey,
                     fieldName: 'Description',
                     hintText: 'Lunch',
+                    validate: TextInputValidators.validateDecriptionField,
                     controller: state.description,
                   ),
                   const SizedBox(height: 8),
                   OnflyTextField(
+                    formKey: _cubit.expenseDateFormKey,
                     fieldName: 'Expense date',
                     hintText: '15/10/2023',
                     masks: [TextInputMasks.brazillianDateMask],
+                    validate: TextInputValidators.validateDateField,
+                    inputType: TextInputType.number,
                     controller: state.expenseDate,
                   ),
                   const SizedBox(height: 8),
                   OnflyTextField(
+                    formKey: _cubit.amountFormKey,
                     fieldName: 'Value',
                     hintText: '34,15',
+                    validate: TextInputValidators.validateAmount,
+                    inputType:
+                        const TextInputType.numberWithOptions(decimal: true),
                     masks: [TextInputMasks.amountFields],
                     controller: state.amount,
                   ),
                   const SizedBox(height: 24),
                   OnflyFilledButton(
                     onPressed: () {
+                      var isDecriptionFormKey =
+                          _cubit.decriptionFormKey.currentState!.validate();
+                      var isExpenseDateFormKey =
+                          _cubit.expenseDateFormKey.currentState!.validate();
+                      var isAmountFormKey =
+                          _cubit.amountFormKey.currentState!.validate();
+
+                      if (isDecriptionFormKey &&
+                          isExpenseDateFormKey &&
+                          isAmountFormKey) {
                       widget.editCallback != null
                           ?
                         _cubit.updateExpense(
@@ -96,6 +116,7 @@ class _ExpensePageState extends State<ExpensePage> {
                                 return widget.addCallback!(expense);
                               },
                             );
+                      }
                     },
                     padding: 16,
                     child: Text(
