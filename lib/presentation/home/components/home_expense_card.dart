@@ -118,14 +118,22 @@ class _HomeExpenseCardState extends State<_HomeExpenseCard> {
                       'https://midia.gruposinos.com.br/_midias/jpg/2021/03/11/mgid_arc_content_shared_southpark-19506257.jpg',
                       height: 112,
                       fit: BoxFit.fitWidth,
-                      loadingBuilder: (context, child, loadingProgress) {
+                    errorBuilder: (context, exception, stackTrace) {
+                      return const SizedBox.shrink();
+                    },
+                    loadingBuilder: (
+                      context,
+                      child,
+                      loadingProgress,
+                    ) {
                     if (loadingProgress == null) {
                       return child;
                     }
                     return const Center(
                       child: OnflyCircularLoading(),
                     );
-                  }),
+                    },
+                  ),
                   const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
