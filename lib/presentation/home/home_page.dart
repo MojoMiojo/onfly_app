@@ -11,7 +11,6 @@ import 'package:onfly_app/presentation/widgets/widgets.dart';
 
 part 'components/home_expense_card.dart';
 part 'components/home_floating_action_button.dart';
-part 'components/home_bottom_navigation_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

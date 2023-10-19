@@ -139,7 +139,10 @@ class _HomeExpenseCardState extends State<_HomeExpenseCard> {
                       const SizedBox(width: 16),
                       Expanded(
                         child: OnflyFilledButton(
-                          onPressed: () => widget.onDelete(widget.expense),
+                          onPressed: () => OnflyDialog.show(
+                            context,
+                            () => widget.onDelete(widget.expense),
+                          ),
                           child: const Text('Erase'),
                         ),
                       ),
