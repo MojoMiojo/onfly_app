@@ -85,11 +85,11 @@ class HomeCubit extends Cubit<HomeState> {
 
     response.processResult(
       onSuccess: (expenses) {
-        _expenses.forEach((element) {
+        for (var element in _expenses) {
           if (!_expenses.contains(element)) {
             _expenses.add(element);
           }
-        });
+        }
         emit(HomeLoadedState(_expenses, _isAuthenticated));
       },
       onFailure: (_) {},
@@ -147,8 +147,9 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> syncExpense(ExpenseModel expense) async {
     if (!_isAuthenticated) await _authenticate();
-    if (!expense.isSubmitted && expense.isEditPending)
+    if (!expense.isSubmitted && expense.isEditPending) {
       return _syncEditedExpense(expense);
+    }
     emit(HomeLoadingState());
 
     var response = await _createExpenseUseCase(
