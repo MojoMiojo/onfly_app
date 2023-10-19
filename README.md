@@ -2,13 +2,13 @@
 
 A new Flutter project to register your trip expense with internet connection or no.
 
-<img width="690" alt="image" src="https://github.com/MojoMiojo/onfly_app/assets/42383407/696c1616-1501-491e-b83a-36f1b5f2c5fd">
+<img width="683" alt="image" src="https://github.com/MojoMiojo/onfly_app/assets/42383407/fcb03eef-067b-44cb-97c5-5fb30ce47cf8">
 
 ## how to run
 
 You must be on Flutter 3, make sure your enviroment have no issues by typing 'flutter doctor' on your terminal:
 
-<img width="697" alt="image" src="https://github.com/MojoMiojo/onfly_app/assets/42383407/564b3dad-fc69-4ee9-98b4-9f4a5dc223c4">
+<img width="572" alt="image" src="https://github.com/MojoMiojo/onfly_app/assets/42383407/d39105e1-6b99-4819-8a0f-4475b903ef74">
 
 By the way, make sure you have an available test device on your enviroment.
 
