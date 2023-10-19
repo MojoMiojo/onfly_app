@@ -4,10 +4,14 @@ import 'package:onfly_app/data/expense/datasource/expense_datasource.dart';
 import 'package:onfly_app/data/expense/repository/expense_repository_impl.dart';
 import 'package:onfly_app/data/home/datasource/home_datasource.dart';
 import 'package:onfly_app/data/home/repository/home_respository_impl.dart';
+import 'package:onfly_app/data/shared/datasource/shared_preferences_datasource.dart';
+import 'package:onfly_app/data/shared/repository/shared_preferences_repository_impl.dart';
 import 'package:onfly_app/domain/expense/repository/expense_repository.dart';
 import 'package:onfly_app/domain/expense/use_cases/create_expense_use_case.dart';
 import 'package:onfly_app/domain/expense/use_cases/update_expense_use_case.dart';
 import 'package:onfly_app/domain/home/use_cases/delete_expense_use_case.dart';
+import 'package:onfly_app/domain/shared/repository/shared_preferences_repository.dart';
+import 'package:onfly_app/domain/shared/use_cases/persist_expense_use_case.dart';
 import 'package:onfly_app/presentation/expense/stores/expense_cubit.dart';
 import 'package:onfly_app/presentation/presentation.dart';
 import 'package:onfly_app/domain/domain.dart';
@@ -35,6 +39,9 @@ class DependencyInjection {
     getIt.registerFactory<ExpenseDatasource>(
       () => ExpenseDatasource(getIt()),
     );
+    getIt.registerFactory<SharedPreferencesDatasource>(
+      () => SharedPreferencesDatasource(),
+    );
   }
 
   void registerRepository() {
@@ -43,6 +50,9 @@ class DependencyInjection {
     );
     getIt.registerFactory<ExpenseRepository>(
       () => ExpenseRepositoryImpl(getIt()),
+    );
+    getIt.registerFactory<SharedPreferencesRepository>(
+      () => SharedPreferencesRepositoryImpl(getIt()),
     );
   }
 
@@ -65,6 +75,9 @@ class DependencyInjection {
     getIt.registerFactory<DeleteExpenseUseCase>(
       () => DeleteExpenseUseCase(getIt()),
     );
+    getIt.registerFactory<PersistExpenseUseCase>(
+      () => PersistExpenseUseCase(getIt()),
+    );
   }
 
   void registerCubit() {
@@ -73,13 +86,14 @@ class DependencyInjection {
         authenticateUseCase: getIt(),
         setJwtUseCase: getIt(),
         listExpensesUseCase: getIt(),
-          deleteExpenseUseCase: getIt()
+        deleteExpenseUseCase: getIt(),
       ),
     );
     getIt.registerFactory<ExpenseCubit>(
       () => ExpenseCubit(
         updateExpenseUseCase: getIt(),
         createExpenseUseCase: getIt(),
+        persistExpenseUseCase: getIt(),
       ),
     );
   }

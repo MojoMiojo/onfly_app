@@ -45,37 +45,44 @@ class _HomeExpenseCardState extends State<_HomeExpenseCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.expense.description,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
+                Flexible(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        widget.expense.description,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      widget.expense.asDate.brazillianDateFormat(),
-                    )
-                  ],
+                      const SizedBox(height: 8),
+                      Text(
+                        widget.expense.asDate.brazillianDateFormat(),
+                      )
+                    ],
+                  ),
                 ),
-                const Spacer(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.expense.amount.toDouble().formatToMoney(),
-                    ),
-                    const SizedBox(height: 8),
-                    Visibility.maintain(
-                      visible: !widget.expense.isSubmitted,
-                      child: Icon(
-                        Icons.wifi_off_rounded,
-                        color: OnflyColors.burntSienna,
+                const SizedBox(width: 16),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.expense.amount.toDouble().formatToMoney(),
                       ),
-                    )
-                  ],
+                      const SizedBox(height: 8),
+                      Visibility.maintain(
+                        visible: !widget.expense.isSubmitted,
+                        child: Icon(
+                          Icons.wifi_off_rounded,
+                          color: OnflyColors.burntSienna,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 const SizedBox(width: 16),
                 const Icon(Icons.expand_more_rounded)
