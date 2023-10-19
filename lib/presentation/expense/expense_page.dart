@@ -53,28 +53,28 @@ class _ExpensePageState extends State<ExpensePage> {
             return Scaffold(
               appBar: OnflyAppBar(
                 title: widget.expenseModel == null
-                    ? 'Adicionar despesa'
-                    : 'Editar despesa',
+                    ? 'Add expense'
+                    : 'Edit expense',
               ),
               body: ListView(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 children: [
                   OnflyTextField(
-                    fieldName: 'Descrição',
-                    hintText: 'Almoço',
+                    fieldName: 'Description',
+                    hintText: 'Lunch',
                     controller: state.description,
                   ),
                   const SizedBox(height: 8),
                   OnflyTextField(
-                    fieldName: 'Data da despesa',
+                    fieldName: 'Expense date',
                     hintText: '15/10/2023',
                     masks: [TextInputMasks.brazillianDateMask],
                     controller: state.expenseDate,
                   ),
                   const SizedBox(height: 8),
                   OnflyTextField(
-                    fieldName: 'Valor',
+                    fieldName: 'Value',
                     hintText: '34,15',
                     masks: [TextInputMasks.amountFields],
                     controller: state.amount,
@@ -99,7 +99,7 @@ class _ExpensePageState extends State<ExpensePage> {
                     },
                     padding: 16,
                     child: Text(
-                      widget.expenseModel == null ? 'Adicionar' : 'Salvar',
+                      widget.expenseModel == null ? 'Add' : 'Save',
                     ),
                   )
                 ],

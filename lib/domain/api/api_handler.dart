@@ -23,4 +23,6 @@ abstract class ApiHandler {
     dynamic body,
     Map<String, dynamic>? queryParams,
   });
+
+  void handleExceptions(Object error);
 }

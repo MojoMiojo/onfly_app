@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:onfly_app/data/api/dio_client.dart';
+import 'package:onfly_app/data/utils/exceptions/unknown_exception.dart';
 import 'package:onfly_app/domain/api/api_handler.dart';
 
 class ApiHandlerImpl extends ApiHandler {
@@ -19,20 +21,18 @@ class ApiHandlerImpl extends ApiHandler {
     required String path,
     Map<String, dynamic>? queryParams,
   }) async {
+    try {
     final response = await client.dio.get(
       path,
       queryParameters: queryParams,
     );
 
-    logRequest(
-      baseUrl: response.requestOptions.baseUrl,
-      path: path,
-      data: response.data,
-      statusMessage: response.statusMessage,
-      statusCode: response.statusCode,
-    );
+      logRequest(response);
 
     return response.data;
+    } catch (e) {
+      throw handleExceptions(e);
+    }
   }
 
   @override
@@ -41,21 +41,19 @@ class ApiHandlerImpl extends ApiHandler {
     required dynamic body,
     Map<String, dynamic>? queryParams,
   }) async {
+    try {
     final response = await client.dio.post(
       path,
       data: body,
       queryParameters: queryParams,
     );
 
-    logRequest(
-      baseUrl: response.requestOptions.baseUrl,
-      path: path,
-      data: response.data,
-      statusMessage: response.statusMessage,
-      statusCode: response.statusCode,
-    );
+      logRequest(response);
 
     return response.data;
+    } catch (e) {
+      throw handleExceptions(e);
+    }
   }
 
   @override
@@ -64,21 +62,19 @@ class ApiHandlerImpl extends ApiHandler {
     required body,
     Map<String, dynamic>? queryParams,
   }) async {
+    try {
     final response = await client.dio.patch(
       path,
       data: body,
       queryParameters: queryParams,
     );
 
-    logRequest(
-      baseUrl: response.requestOptions.baseUrl,
-      path: path,
-      data: response.data,
-      statusMessage: response.statusMessage,
-      statusCode: response.statusCode,
-    );
+      logRequest(response);
 
     return response.data;
+    } catch (e) {
+      throw handleExceptions(e);
+    }
   }
 
   @override
@@ -87,32 +83,32 @@ class ApiHandlerImpl extends ApiHandler {
     body,
     Map<String, dynamic>? queryParams,
   }) async {
+    try {
     final response = await client.dio.delete(
       path,
       data: body,
       queryParameters: queryParams,
     );
 
-    logRequest(
-      baseUrl: response.requestOptions.baseUrl,
-      path: path,
-      data: response.data,
-      statusMessage: response.statusMessage,
-      statusCode: response.statusCode,
-    );
+      logRequest(response);
 
     return response.data;
+    } catch (e) {
+      throw handleExceptions(e);
+    }
   }
 
-  void logRequest({
-    required String baseUrl,
-    required String path,
-    dynamic data,
-    String? statusMessage,
-    int? statusCode,
-  }) {
+  @override
+  Exception handleExceptions(Object error) {
+    if (error is! DioException) return UnkownException();
+    if (error.response == null) return UnkownException();
+    logRequest(error.response!);
+    return error;
+  }
+
+  void logRequest(Response<dynamic> response) {
     debugPrint(
-      'ApiHandler | [$statusCode] $baseUrl$path, statusMessage: $statusMessage, data: $data',
+      'ApiHandler | [${response.statusCode}] ${response.requestOptions.baseUrl + response.requestOptions.path}, statusMessage: ${response.statusMessage}, data: ${response.data}',
     );
   }
 

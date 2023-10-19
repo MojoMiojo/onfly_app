@@ -4,6 +4,6 @@ class OnflyApiRoutes {
   OnflyApiRoutes(this.identity, {this.pathVariables});
 
   static get authenticate => '/collections/users/auth-with-password';
-  get createOrlistExpenses => '/collections/expense_$identity/records'; 
+  get createOrlistExpenses => '/collections/expense_$identity/recordss'; 
   get updateExpense => '/collections/expense_$identity/records/$pathVariables';
 }
